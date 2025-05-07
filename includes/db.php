@@ -1,132 +1,114 @@
 <?php
-// E-Barangay Management System - Database Connection
+// E-Barangay Management System - Database Connection (SQL Server)
 
 // Include configuration file
 require_once 'config.php';
 
 // Establish database connection
 function connectDB() {
-    $conn = new mysqli(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
-
-    // Check connection
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
+    $connectionInfo = array(
+        "Database" => DB_NAME,
+        "UID" => DB_USERNAME,
+        "PWD" => DB_PASSWORD,
+        "CharacterSet" => "UTF-8"
+    );
+    $conn = sqlsrv_connect(DB_SERVER, $connectionInfo);
+    if ($conn === false) {
+        die(print_r(sqlsrv_errors(), true));
     }
-
     return $conn;
 }
 
 // Close database connection
 function closeDB($conn) {
-    $conn->close();
+    sqlsrv_close($conn);
 }
 
 // Execute query and return result
-function executeQuery($sql) {
+function executeQuery($sql, $params = array()) {
     $conn = connectDB();
-    $result = $conn->query($sql);
-
-    if ($result === false) {
-        die("Query execution failed: " . $conn->error);
+    $stmt = sqlsrv_query($conn, $sql, $params);
+    if ($stmt === false) {
+        die(print_r(sqlsrv_errors(), true));
     }
-
     closeDB($conn);
-    return $result;
+    return $stmt;
 }
 
 // Execute query and return inserted ID
-function executeInsert($sql) {
+function executeInsert($sql, $params = array()) {
     $conn = connectDB();
-
-    if ($conn->query($sql) === false) {
-        die("Insert query failed: " . $conn->error);
+    $stmt = sqlsrv_query($conn, $sql, $params);
+    if ($stmt === false) {
+        die(print_r(sqlsrv_errors(), true));
     }
-
-    $lastId = $conn->insert_id;
+    // Get last inserted ID
+    $query = sqlsrv_query($conn, "SELECT SCOPE_IDENTITY() AS id");
+    $row = sqlsrv_fetch_array($query, SQLSRV_FETCH_ASSOC);
+    $lastId = $row['id'];
     closeDB($conn);
-
     return $lastId;
 }
 
 // Execute prepared statement with parameters
-function executePrepared($sql, $types, $params) {
+function executePrepared($sql, $params = array()) {
     $conn = connectDB();
-    $stmt = $conn->prepare($sql);
-
+    $stmt = sqlsrv_query($conn, $sql, $params);
     if ($stmt === false) {
-        die("Preparing statement failed: " . $conn->error);
+        die(print_r(sqlsrv_errors(), true));
     }
-
-    if (!empty($params)) {
-        $stmt->bind_param($types, ...$params);
-    }
-
-    if ($stmt->execute() === false) {
-        die("Executing statement failed: " . $stmt->error);
-    }
-
-    $result = $stmt->get_result();
-    $stmt->close();
     closeDB($conn);
-
-    return $result;
+    return $stmt;
 }
 
 // Fetch all rows from a result set
 function fetchAll($result) {
     $rows = array();
-
-    while ($row = $result->fetch_assoc()) {
+    while ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
         $rows[] = $row;
     }
-
     return $rows;
 }
 
 // Fetch a single row from a result set
 function fetchOne($result) {
-    return $result->fetch_assoc();
+    return sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);
 }
 
 // Count rows in a result set
 function countRows($result) {
-    return $result->num_rows;
+    $count = 0;
+    while (sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
+        $count++;
+    }
+    return $count;
 }
 
 // Sanitize input data
 function sanitizeInput($data) {
-    $conn = connectDB();
     $data = trim($data);
     $data = stripslashes($data);
     $data = htmlspecialchars($data);
-    $data = $conn->real_escape_string($data);
-    closeDB($conn);
+    // SQLSRV does not have real_escape_string, use parameterized queries instead
     return $data;
 }
 
 // Check if a user exists with the given credentials
 function checkUserCredentials($username, $password) {
     $conn = connectDB();
-
-    // Prepare statement to prevent SQL injection
-    $stmt = $conn->prepare("SELECT id, username, password, first_name, last_name FROM admins WHERE username = ?");
-    $stmt->bind_param("s", $username);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if ($result->num_rows === 1) {
-        $user = $result->fetch_assoc();
-
-        // In a real application, you would use password_verify() with hashed passwords
-        // For this demo, we're using plain text comparison
-        if ($password === $user['password']) {
-            $stmt->close();
-            closeDB($conn);
-            return $user;
-        }
+    $sql = "SELECT id, username, password, first_name, last_name FROM admins WHERE username = ?";
+    $params = array($username);
+    $stmt = sqlsrv_query($conn, $sql, $params);
+    if ($stmt === false) {
+        die(print_r(sqlsrv_errors(), true));
     }
-
-    $stmt->close();
+    $user = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
+    if ($user && $password === $user['password']) { // Plain text comparison
+        sqlsrv_free_stmt($stmt);
+        closeDB($conn);
+        return $user;
+    }
+    sqlsrv_free_stmt($stmt);
     closeDB($conn);
     return false;
 }

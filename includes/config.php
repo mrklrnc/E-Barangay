@@ -2,10 +2,20 @@
 // E-Barangay Management System - Configuration File
 
 // Database Configuration
-define('DB_SERVER', 'localhost');
-define('DB_USERNAME', 'root');
-define('DB_PASSWORD', '');
+// To find your server name:
+// 1. Open SSMS
+// 2. Look at the server name in the connection window
+// 3. Common names are: localhost, .\SQLEXPRESS, or your computer name
+define('DB_SERVER', 'localhost'); // Replace with your SQL Server instance name
+
+// To set up credentials:
+// 1. In SSMS, go to Security > Logins
+// 2. Right-click > New Login
+// 3. Create a new SQL Server authentication login
+define('DB_USERNAME', 'admin'); // Replace with your SQL Server login name
+define('DB_PASSWORD', 'password'); // Replace with your SQL Server password
 define('DB_NAME', 'ebarangay_db');
+define('DB_PORT', '1433'); // Default SQL Server port
 
 // Application Configuration
 define('SITE_NAME', 'E-Barangay Management System');

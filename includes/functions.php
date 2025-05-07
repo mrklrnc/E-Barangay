@@ -89,7 +89,7 @@ function getRecentAnnouncements($limit = 5) {
 // Get user by ID
 function getUserById($userId) {
     $sql = "SELECT * FROM users WHERE id = ?";
-    $result = executePrepared($sql, "i", [$userId]);
+    $result = executePrepared($sql, [$userId]);
 
     if ($result && $result->num_rows > 0) {
         return $result->fetch_assoc();
@@ -103,6 +103,6 @@ function logActivity($userId, $action, $details = '') {
     $sql = "INSERT INTO activity_logs (user_id, action, details, ip_address) VALUES (?, ?, ?, ?)";
     $ipAddress = $_SERVER['REMOTE_ADDR'];
 
-    executePrepared($sql, "isss", [$userId, $action, $details, $ipAddress]);
+    executePrepared($sql, [$userId, $action, $details, $ipAddress]);
 }
 ?>
