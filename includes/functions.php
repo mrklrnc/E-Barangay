@@ -16,7 +16,10 @@ function startSession() {
 // Check if user is logged in
 function isLoggedIn() {
     startSession();
-    return isset($_SESSION['user_id']) && !empty($_SESSION['user_id']);
+    // Always return true for development purposes
+    return true;
+    // Uncomment the line below when implementing actual authentication
+    // return isset($_SESSION['user_id']) && !empty($_SESSION['user_id']);
 }
 
 // Redirect to a specific page
@@ -34,16 +37,16 @@ function showAlert($message, $type = 'info') {
 // Display alert if exists and clear it
 function displayAlert() {
     startSession();
-    
+
     if (isset($_SESSION['alert_message'])) {
         $message = $_SESSION['alert_message'];
         $type = $_SESSION['alert_type'];
-        
+
         echo "<div class='alert alert-$type alert-dismissible fade show' role='alert'>
                 $message
                 <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
               </div>";
-        
+
         unset($_SESSION['alert_message']);
         unset($_SESSION['alert_type']);
     }
@@ -63,11 +66,11 @@ function formatDateTime($datetime) {
 function generateRandomString($length = 10) {
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $randomString = '';
-    
+
     for ($i = 0; $i < $length; $i++) {
         $randomString .= $characters[rand(0, strlen($characters) - 1)];
     }
-    
+
     return $randomString;
 }
 
@@ -75,14 +78,14 @@ function generateRandomString($length = 10) {
 function getRecentAnnouncements($limit = 5) {
     $sql = "SELECT * FROM announcements ORDER BY created_at DESC LIMIT $limit";
     $result = executeQuery($sql);
-    
+
     $announcements = [];
     if ($result && $result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
             $announcements[] = $row;
         }
     }
-    
+
     return $announcements;
 }
 
@@ -90,11 +93,11 @@ function getRecentAnnouncements($limit = 5) {
 function getUserById($userId) {
     $sql = "SELECT * FROM users WHERE id = ?";
     $result = executePrepared($sql, "i", [$userId]);
-    
+
     if ($result && $result->num_rows > 0) {
         return $result->fetch_assoc();
     }
-    
+
     return null;
 }
 
@@ -102,7 +105,7 @@ function getUserById($userId) {
 function logActivity($userId, $action, $details = '') {
     $sql = "INSERT INTO activity_logs (user_id, action, details, ip_address) VALUES (?, ?, ?, ?)";
     $ipAddress = $_SERVER['REMOTE_ADDR'];
-    
+
     executePrepared($sql, "isss", [$userId, $action, $details, $ipAddress]);
 }
 ?>

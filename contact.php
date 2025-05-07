@@ -135,8 +135,7 @@ include_once 'includes/header.php';
                     <div class="card-body">
                         <div class="ratio ratio-16x9">
                             <!-- Replace with actual Google Maps embed code for your barangay location -->
-                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3861.802548850311!2d121.04882931483994!3d14.554743989828378!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397c8efd99aad53%3A0xb64b39847a866fde!2sBarangay%20Hall!5e0!3m2!1sen!2sph!4v1651212345678!5m2!1sen!2sph" allowfullscreen="" loading="lazy"></iframe>
-                        </div>
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3860.895397988984!2d121.01886317667876!3d14.605034149479126!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397b7002022b6ff%3A0xb468d8b9f553cd03!2sPedro%20Cruz%20Brgy.%20Hall!5e0!3m2!1sen!2sph!4v1746596981864!5m2!1sen!2sph" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>                        </div>
                     </div>
                 </div>
             </div>

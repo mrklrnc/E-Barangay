@@ -3,10 +3,7 @@
 require_once '../includes/config.php';
 require_once '../includes/functions.php';
 
-// Check if user is logged in
-if (!isLoggedIn() && basename($_SERVER['PHP_SELF']) != 'index.php') {
-    redirect('index.php');
-}
+// No login check for development purposes
 
 // Start session
 startSession();
@@ -20,21 +17,21 @@ $currentPage = basename($_SERVER['PHP_SELF'], '.php');
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - <?php echo SITE_NAME; ?></title>
-    
+
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    
+
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
+
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    
+
     <!-- Custom CSS -->
     <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
-    <?php if (isLoggedIn() && basename($_SERVER['PHP_SELF']) != 'index.php'): ?>
+    <?php // Always show admin interface regardless of login status ?>
     <div class="container-fluid">
         <div class="row">
             <!-- Sidebar -->
@@ -81,12 +78,12 @@ $currentPage = basename($_SERVER['PHP_SELF'], '.php');
                     </li>
                 </ul>
             </div>
-            
+
             <!-- Main Content -->
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 admin-content">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 class="h2">
-                        <?php 
+                        <?php
                         switch ($currentPage) {
                             case 'dashboard':
                                 echo 'Dashboard';
@@ -125,7 +122,6 @@ $currentPage = basename($_SERVER['PHP_SELF'], '.php');
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Alert Messages -->
                 <?php displayAlert(); ?>
-    <?php endif; ?>
