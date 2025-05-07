@@ -1,6 +1,19 @@
 <?php
 // Include header
 include_once 'includes/header.php';
+require_once '../includes/db.php';
+require_once 'functions/citizen_stats.php';
+
+// Get actual count of citizens
+$sql = "SELECT COUNT(*) AS total FROM citizens";
+$resultAndConn = executeQuery($sql);
+if ($resultAndConn === false) {
+    die(print_r(sqlsrv_errors(), true));
+}
+$row = fetchOne($resultAndConn);
+$totalCitizens = $row ? $row['total'] : 0;
+
+$totalCitizens = getCitizenCount();
 ?>
 
 <!-- Dashboard Overview -->
@@ -10,7 +23,7 @@ include_once 'includes/header.php';
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h6 class="text-muted">Total Citizens</h6>
-                    <h3>1,250</h3>
+                    <h3><?php echo $totalCitizens; ?></h3>
                 </div>
                 <div class="bg-primary bg-opacity-10 p-3 rounded">
                     <i class="fas fa-users fa-2x text-primary"></i>

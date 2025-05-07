@@ -31,8 +31,8 @@ function executeQuery($sql, $params = array()) {
     if ($stmt === false) {
         die(print_r(sqlsrv_errors(), true));
     }
-    closeDB($conn);
-    return $stmt;
+    // Return both statement and connection
+    return array($stmt, $conn);
 }
 
 // Execute query and return inserted ID
@@ -57,7 +57,7 @@ function executePrepared($sql, $params = array()) {
     if ($stmt === false) {
         die(print_r(sqlsrv_errors(), true));
     }
-    closeDB($conn);
+    // Do not close the connection here
     return $stmt;
 }
 
@@ -71,8 +71,12 @@ function fetchAll($result) {
 }
 
 // Fetch a single row from a result set
-function fetchOne($result) {
-    return sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);
+function fetchOne($resultAndConn) {
+    list($result, $conn) = $resultAndConn;
+    $row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);
+    sqlsrv_free_stmt($result);
+    closeDB($conn);
+    return $row;
 }
 
 // Count rows in a result set
