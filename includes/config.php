@@ -10,7 +10,7 @@ define('DB_NAME', 'ebarangay_db');
 // Application Configuration
 define('SITE_NAME', 'E-Barangay Management System');
 define('BARANGAY_NAME', 'Barangay Sample');
-define('BARANGAY_ADDRESS', '123 Main Street, City, Province');
+define('BARANGAY_ADDRESS', '1 J. Basa, San Juan, 1500 Metro Manila');
 define('BARANGAY_CONTACT', '+63 912 345 6789');
 define('BARANGAY_EMAIL', 'info@barangaysample.gov.ph');
 
