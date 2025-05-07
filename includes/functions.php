@@ -16,10 +16,7 @@ function startSession() {
 // Check if user is logged in
 function isLoggedIn() {
     startSession();
-    // Always return true for development purposes
-    return true;
-    // Uncomment the line below when implementing actual authentication
-    // return isset($_SESSION['user_id']) && !empty($_SESSION['user_id']);
+    return isset($_SESSION['user_id']) && !empty($_SESSION['user_id']);
 }
 
 // Redirect to a specific page

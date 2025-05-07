@@ -56,11 +56,22 @@ E-Barangay/
 
 2. Set up a web server with PHP support (e.g., XAMPP, WAMP)
 
-3. Import the database schema (to be provided)
+3. Configure the database connection in `includes/config.php`:
+   - Update the DB_SERVER, DB_USERNAME, DB_PASSWORD values to match your MySQL server settings
 
-4. Configure the database connection in `includes/config.php`
+4. Initialize the database by accessing:
+   ```
+   http://localhost/E-Barangay/database/init_db.php
+   ```
+   This will create the database, tables, and insert initial data.
 
-5. Access the application through your web server
+5. Alternatively, you can manually import the database schema:
+   - For MySQL: Use the SQL script in `database/ebarangay_db_mysql.sql`
+
+6. Access the application through your web server:
+   ```
+   http://localhost/E-Barangay/
+   ```
 
 ## Admin Access
 

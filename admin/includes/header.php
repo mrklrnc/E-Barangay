@@ -111,7 +111,14 @@ $currentPage = basename($_SERVER['PHP_SELF'], '.php');
                     <div class="btn-toolbar mb-2 mb-md-0">
                         <div class="dropdown">
                             <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fas fa-user-circle me-1"></i> Admin
+                                <i class="fas fa-user-circle me-1"></i>
+                                <?php
+                                if (isset($_SESSION['first_name']) && isset($_SESSION['last_name'])) {
+                                    echo $_SESSION['first_name'] . ' ' . $_SESSION['last_name'];
+                                } else {
+                                    echo $_SESSION['username'];
+                                }
+                                ?>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                                 <li><a class="dropdown-item" href="profile.php">Profile</a></li>
