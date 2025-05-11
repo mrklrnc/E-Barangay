@@ -1,0 +1,31 @@
+<?php
+// E-Barangay Management System - Configuration File Example
+
+define('DB_SERVER', 'localhost'); 
+define('DB_USERNAME', 'your_username'); 
+define('DB_PASSWORD', 'your_password'); 
+define('DB_NAME', 'your_database_name');
+define('DB_PORT', '1433'); 
+
+// Application Configuration
+define('SITE_NAME', 'E-Barangay Management System');
+define('BARANGAY_NAME', 'Your Barangay Name');
+define('BARANGAY_ADDRESS', 'Your Barangay Address');
+define('BARANGAY_CONTACT', 'Your Contact Number');
+define('BARANGAY_EMAIL', 'your.email@example.com');
+
+// File Upload Configuration
+define('UPLOAD_DIR', 'uploads/');
+define('MAX_FILE_SIZE', 5 * 1024 * 1024); // 5MB
+
+// Session Configuration
+define('SESSION_NAME', 'ebarangay_session');
+define('SESSION_LIFETIME', 3600); // 1 hour
+
+// Error Reporting
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+// Time Zone
+date_default_timezone_set('Asia/Manila');
+?> 
