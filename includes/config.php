@@ -5,7 +5,7 @@
 define('DB_SERVER', 'localhost'); 
 
 define('DB_USERNAME', 'admin'); 
-define('DB_PASSWORD', 'password'); 
+define('DB_PASSWORD', 'password123'); 
 define('DB_NAME', 'ebarangay_db');
 define('DB_PORT', '1433'); 
 
