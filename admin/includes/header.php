@@ -113,10 +113,13 @@ $currentPage = basename($_SERVER['PHP_SELF'], '.php');
                             <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fas fa-user-circle me-1"></i>
                                 <?php
+                                // Display user info safely
                                 if (isset($_SESSION['first_name']) && isset($_SESSION['last_name'])) {
-                                    echo $_SESSION['first_name'] . ' ' . $_SESSION['last_name'];
+                                    echo htmlspecialchars($_SESSION['first_name'] . ' ' . $_SESSION['last_name']);
+                                } elseif (isset($_SESSION['username'])) {
+                                    echo htmlspecialchars($_SESSION['username']);
                                 } else {
-                                    echo $_SESSION['username'];
+                                    echo 'Admin';
                                 }
                                 ?>
                             </button>

@@ -1,31 +1,48 @@
 <?php
-// Include header and functions
-include_once 'includes/header.php';
 require_once 'functions/citizen_functions.php';
+session_start(); // Ensure session is started
 
-// Initialize variables
+// Handle delete request
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_citizen_id'])) {
+    $deleteId = (int)$_POST['delete_citizen_id'];
+    try {
+        $result = deleteCitizen($deleteId);
+        if ($result) {
+            $_SESSION['success'] = 'Citizen deleted successfully.';
+        } else {
+            $_SESSION['error'] = 'Failed to delete citizen.';
+        }
+    } catch (Exception $e) {
+        $_SESSION['error'] = 'Error: ' . $e->getMessage();
+    }
+    header('Location: citizens.php');
+    exit;
+}
+
+// Handle add citizen form
 $errors = array();
 $success = false;
 $formData = array();
-
-// Get current page and search term
-$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-$search = isset($_GET['search']) ? trim($_GET['search']) : '';
-$perPage = 10; // Number of records per page
-
-// Process form submission
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['delete_citizen_id'])) {
     $result = processCitizenForm($_POST);
     $success = $result['success'];
     $errors = $result['errors'];
     $formData = $result['data'];
 
     if ($success) {
-        showAlert('Citizen added successfully!', 'success');
-        // Redirect to citizens list after 2 seconds
-        header("refresh:2;url=citizens.php");
+        $_SESSION['success'] = 'Citizen added successfully!';
+        header('Location: citizens.php');
+        exit;
     }
 }
+
+// Now include header and continue with the rest of the page
+include_once 'includes/header.php';
+
+// Get current page and search term
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$search = isset($_GET['search']) ? trim($_GET['search']) : '';
+$perPage = 10; // Number of records per page
 
 // Get citizens with pagination
 try {
@@ -199,10 +216,10 @@ try {
                                            class="btn btn-warning" title="Edit">
                                             <i class="fas fa-edit"></i>
                                         </a>
-                                        <button type="button" class="btn btn-danger" title="Delete"
-                                                onclick="deleteCitizen(<?php echo $citizen['citizen_id']; ?>)">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
+                                        <form method="POST" onsubmit="return confirm('Are you sure you want to delete this citizen?');" style="display:inline;">
+                                            <input type="hidden" name="delete_citizen_id" value="<?php echo $citizen['citizen_id']; ?>">
+                                            <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</button>
+                                        </form>
                                     </div>
                                 </td>
                             </tr>

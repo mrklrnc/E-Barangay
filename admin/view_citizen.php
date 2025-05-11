@@ -13,17 +13,13 @@ if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
 $id = (int)$_GET['id'];
 
 try {
-    // Get citizen details using the function
+    // Get citizen details
     $citizen = getCitizenDetails($id);
 } catch (Exception $e) {
     showAlert($e->getMessage(), 'danger');
     header('Location: citizens.php');
     exit;
 }
-
-// Format dates if they exist
-$created_at = $citizen['created_at'] ? date('F j, Y g:i A', strtotime($citizen['created_at'])) : 'N/A';
-$updated_at = $citizen['updated_at'] ? date('F j, Y g:i A', strtotime($citizen['updated_at'])) : 'N/A';
 ?>
 
 <div class="container-fluid">
@@ -85,11 +81,23 @@ $updated_at = $citizen['updated_at'] ? date('F j, Y g:i A', strtotime($citizen['
                                 </tr>
                                 <tr>
                                     <th>Date Created:</th>
-                                    <td><?php echo $created_at; ?></td>
+                                    <td>
+                                        <?php 
+                                        echo $citizen['created_at'] ? 
+                                            date('F j, Y g:i A', strtotime($citizen['created_at'])) : 
+                                            'N/A';
+                                        ?>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th>Last Updated:</th>
-                                    <td><?php echo $updated_at; ?></td>
+                                    <td>
+                                        <?php 
+                                        echo $citizen['updated_at'] ? 
+                                            date('F j, Y g:i A', strtotime($citizen['updated_at'])) : 
+                                            'N/A';
+                                        ?>
+                                    </td>
                                 </tr>
                             </table>
                         </div>
