@@ -1,11 +1,11 @@
 <?php
-// Include header and functions
-include_once 'includes/header.php';
+// Start session and include functions
+session_start();
 require_once 'functions/citizen_functions.php';
 
 // Check if ID is provided
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
-    showAlert('Invalid citizen ID', 'danger');
+    $_SESSION['error'] = 'Invalid citizen ID';
     header('Location: citizens.php');
     exit;
 }
@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = $result['data'];
     
     if ($success) {
-        showAlert('Citizen information updated successfully', 'success');
+        $_SESSION['success'] = 'Citizen information updated successfully';
         header('Location: view_citizen.php?id=' . $id);
         exit;
     }
@@ -41,11 +41,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'address' => $citizen['address']
         );
     } catch (Exception $e) {
-        showAlert($e->getMessage(), 'danger');
+        $_SESSION['error'] = $e->getMessage();
         header('Location: citizens.php');
         exit;
     }
 }
+
+// Include header after all redirects
+include_once 'includes/header.php';
 ?>
 
 <div class="container-fluid">

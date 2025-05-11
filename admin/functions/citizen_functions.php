@@ -281,9 +281,9 @@ function getAllCitizensWithPagination($page = 1, $perPage = 10, $search = '') {
 
         // Add search condition if search term is provided
         if (!empty($search)) {
-            $whereClause = " WHERE first_name LIKE ? OR last_name LIKE ? OR contact_number LIKE ? OR email LIKE ? OR address LIKE ?";
+            $whereClause = " WHERE first_name LIKE ? OR last_name LIKE ? OR middle_name LIKE ? OR contact_number LIKE ? OR email LIKE ? OR address LIKE ?";
             $searchTerm = "%{$search}%";
-            $params = array($searchTerm, $searchTerm, $searchTerm, $searchTerm, $searchTerm);
+            $params = array($searchTerm, $searchTerm, $searchTerm, $searchTerm, $searchTerm, $searchTerm);
         }
 
         // Get total records for pagination
@@ -429,8 +429,8 @@ function getCitizenDetails($id) {
                     contact_number,
                     email,
                     address,
-                    CONVERT(VARCHAR, created_at, 120) as created_at,
-                    CONVERT(VARCHAR, updated_at, 120) as updated_at
+                    FORMAT(created_at, 'yyyy-MM-dd HH:mm:ss') as created_at,
+                    FORMAT(updated_at, 'yyyy-MM-dd HH:mm:ss') as updated_at
                 FROM citizens 
                 WHERE id = ?";
                 

@@ -19,21 +19,23 @@ $totalCitizens = getCitizenCount();
 <!-- Dashboard Overview -->
 <div class="row">
     <div class="col-md-3 mb-4">
-        <div class="admin-card">
-            <div class="d-flex justify-content-between align-items-center">
-                <div>
-                    <h6 class="text-muted">Total Citizens</h6>
-                    <h3><?php echo $totalCitizens; ?></h3>
+        <a href="citizens.php" class="text-decoration-none">
+            <div class="admin-card">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="text-muted">Total Citizens</h6>
+                        <h3><?php echo $totalCitizens; ?></h3>
+                    </div>
+                    <div class="bg-primary bg-opacity-10 p-3 rounded">
+                        <i class="fas fa-users fa-2x text-primary"></i>
+                    </div>
                 </div>
-                <div class="bg-primary bg-opacity-10 p-3 rounded">
-                    <i class="fas fa-users fa-2x text-primary"></i>
+                <div class="mt-3">
+                    <span class="text-success"><i class="fas fa-arrow-up me-1"></i>3.5%</span>
+                    <span class="text-muted ms-2">Since last month</span>
                 </div>
             </div>
-            <div class="mt-3">
-                <span class="text-success"><i class="fas fa-arrow-up me-1"></i>3.5%</span>
-                <span class="text-muted ms-2">Since last month</span>
-            </div>
-        </div>
+        </a>
     </div>
     
     <div class="col-md-3 mb-4">
